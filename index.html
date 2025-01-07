@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IP Logger</title>
+  <script>
+    // Виконуємо запит на сервер для збереження IP
+    fetch('/get-ip')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Помилка запиту: ' + response.statusText);
+        }
+        return response.text();
+      })
+      .then(data => {
+        console.log('Результат:', data);
+      })
+      .catch(error => {
+        console.error('Помилка запиту:', error);
+      });
+  </script>
+</head>
+<body>
+  <h1>IP Logger</h1>
+  <p>Ваш IP буде збережено на сервері.</p>
+</body>
+</html>
