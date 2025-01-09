@@ -4,7 +4,7 @@ const path = require('path');
 const axios = require('axios');
 
 const app = express(); // Ініціалізуємо express
-const port = 80;
+const port = 3000;
 
 app.use(express.json()); // Включаємо middleware для обробки JSON
 
@@ -25,17 +25,30 @@ async function getPublicIp(req) {
   }
 }
 
+// Функція для отримання IP-адреси з заголовків
+function getIpFromHeaders(req) {
+  // Отримуємо IP з заголовків x-forwarded-for або x-real-ip, якщо є
+  const forwardedFor = req.headers['x-forwarded-for'];
+  const realIp = req.headers['x-real-ip'];
+
+  // Якщо є x-forwarded-for, беремо перший IP з нього
+  const ip = forwardedFor ? forwardedFor.split(',')[0] : realIp || req.connection.remoteAddress || req.ip;
+
+  return ip;
+}
+
 // Endpoint для отримання IP-адреси
 app.get('/get-ip', async (req, res) => {
   try {
-    // Отримуємо публічний IP за допомогою стороннього сервісу
+    // Спочатку намагаємось отримати публічний IP через сторонній сервіс
     const ip = await getPublicIp(req);
     
-    // Якщо не вдалося отримати публічний IP через сторонній сервіс, використовуємо локальний
-    const realIp = ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    // Якщо не вдалося отримати публічний IP, використовуємо заголовки або remoteAddress
+    const realIp = ip || getIpFromHeaders(req);
 
     console.log(`IP отримано: ${realIp}`);
 
+    // Читаємо файл ips.json
     fs.readFile(filePath, 'utf8', (err, data) => {
       let ips = [];
       if (err) {
@@ -58,7 +71,7 @@ app.get('/get-ip', async (req, res) => {
       // Додавання IP у масив
       ips.push(realIp);
 
-      // Запис оновленого масиву у файл ips.json
+      // Запис оновленого масиву в файл ips.json
       fs.writeFile(filePath, JSON.stringify(ips, null, 2), (writeErr) => {
         if (writeErr) {
           console.error('Помилка запису у файл:', writeErr);
@@ -71,6 +84,11 @@ app.get('/get-ip', async (req, res) => {
     console.error('Загальна помилка:', error);
     res.status(500).send('Помилка при обробці запиту');
   }
+});
+
+// Перенаправлення на ваше нове посилання на Vercel
+app.get('/redirect', (req, res) => {
+  res.redirect('https://google-d77t.vercel.app/'); // Нове посилання на Vercel
 });
 
 // Запуск сервера

@@ -1,0 +1,199 @@
+/* Загальні стилі */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  body {
+    background: #2a3d87; /* Темний фон для загального вигляду */
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.6;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Використовуємо grid для заповнення фону трикутниками */
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(0, 0, 0, 0.1) 20px, rgba(0, 0, 0, 0.1) 40px), 
+      repeating-linear-gradient(-45deg, transparent, transparent 20px, rgba(0, 0, 0, 0.1) 20px, rgba(0, 0, 0, 0.1) 40px);
+    z-index: -1; /* Фон трикутників знаходиться позаду основного контенту */
+  }
+  
+  h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #ffeb3b;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+  }
+  
+  h1:hover {
+    color: #ffffff;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+  }
+  
+  /* Стилі кнопки */
+  button {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    background-color: #ff4081;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #f50057;
+    transform: scale(1.1);
+  }
+  
+  button:active {
+    transform: scale(1.05);
+  }
+  
+  /* Анімація фону */
+  @keyframes backgroundAnimation {
+    0% {
+      background: linear-gradient(135deg, #6e7dff, #2a3d87);
+    }
+    50% {
+      background: linear-gradient(135deg, #ff5722, #ff9800);
+    }
+    100% {
+      background: linear-gradient(135deg, #6e7dff, #2a3d87);
+    }
+  }
+  
+  /* Стилі для блоку з IP */
+  .ip-container {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    max-width: 500px;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .ip-container:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+    transform: translateY(-5px);
+  }
+  
+  .ip-container h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #ffeb3b;
+  }
+  
+  .ip-container p {
+    font-size: 1.2rem;
+    color: #bdbdbd;
+  }
+  
+  /* Стилі для посилань */
+  a {
+    color: #ff4081;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  a:hover {
+    color: #f50057;
+    text-decoration: underline;
+  }
+  
+  /* Стилі для контейнера */
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  
+  /* Стилі для модального вікна */
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 40px;
+    border-radius: 15px;
+    max-width: 400px;
+    display: none;
+    z-index: 999;
+    transition: opacity 0.3s ease;
+  }
+  
+  .modal.show {
+    display: block;
+    opacity: 1;
+  }
+  
+  .modal h3 {
+    font-size: 1.6rem;
+    color: #ffeb3b;
+  }
+  
+  .modal p {
+    font-size: 1.2rem;
+    color: #bdbdbd;
+  }
+  
+  .modal button {
+    background-color: #ff4081;
+    padding: 12px 30px;
+    border-radius: 50px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .modal button:hover {
+    background-color: #f50057;
+  }
+  
+  /* Для мобільних пристроїв */
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2.5rem;
+    }
+  
+    .ip-container {
+      padding: 20px;
+      max-width: 100%;
+    }
+  
+    button {
+      padding: 10px 25px;
+    }
+  }
+  
